@@ -7,11 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umc.moviein.apiPayload.ApiResponse;
 import umc.moviein.apiPayload.Exception.handler.UserHandler;
 import umc.moviein.apiPayload.code.status.ErrorStatus;
 import umc.moviein.converter.UserConverter;
-import umc.moviein.domain.User;
+import umc.moviein.domain.Users;
 import umc.moviein.jwt.TokenProvider;
 import umc.moviein.repository.UserRepository;
 import umc.moviein.web.dto.sign.*;
@@ -28,7 +27,7 @@ public class SignCommandServiceImpl implements SignCommandService {
 
     @Override
     @Transactional
-    public User signUp(SignUpRequestDTO.JoinDto signUpRequestDto) {
+    public Users signUp(SignUpRequestDTO.JoinDto signUpRequestDto) {
         // 중복 확인
         if (userRepository.existsByLoginId(signUpRequestDto.getLoginId())) {
             throw new UserHandler(ErrorStatus.USER_ALREADY_EXISTS);  // 수정된 에러 메시지
@@ -36,7 +35,7 @@ public class SignCommandServiceImpl implements SignCommandService {
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(signUpRequestDto.getPassword());
 
-        User user = UserConverter.toUser(signUpRequestDto, encodedPassword);
+        Users user = UserConverter.toUser(signUpRequestDto, encodedPassword);
 
         return userRepository.save(user);
     }

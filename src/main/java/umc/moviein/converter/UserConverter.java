@@ -1,12 +1,12 @@
 package umc.moviein.converter;
 
-import umc.moviein.domain.User;
+import umc.moviein.domain.Users;
 import umc.moviein.web.dto.sign.*;
 
 public class UserConverter {
 
     // User Entity -> DTO
-    public static SignUpResponseDTO.JoinResultDTO toJoinResultDTO(User user) {
+    public static SignUpResponseDTO.JoinResultDTO toJoinResultDTO(Users user) {
         return SignUpResponseDTO.JoinResultDTO.builder()
                 .userId(user.getId())
                 .createdAt(user.getCreatedAt())
@@ -14,8 +14,8 @@ public class UserConverter {
     }
 
     // DTO -> User Entity
-    public static User toUser(SignUpRequestDTO.JoinDto request, String encodedPassword) {
-        return User.builder()
+    public static Users toUser(SignUpRequestDTO.JoinDto request, String encodedPassword) {
+        return Users.builder()
                 .loginId(request.getLoginId())
                 .password(encodedPassword)
                 .email(request.getEmail())
