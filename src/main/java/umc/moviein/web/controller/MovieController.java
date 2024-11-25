@@ -23,7 +23,7 @@ public class MovieController {
         this.movieCommandService = movieCommandService;
     }
 
-    @PostMapping("/save-weekly") //영화 정보 가져와서 저장하는 API
+    @PostMapping("/save-weekly") //영화 정보 가져와서 저장하는 API, requestparam으로 날짜 줄 것! ex)20240101 <- 추천
     public ResponseEntity<String> saveWeeklyMovies(@RequestParam String startDate) {
         // 주간 날짜 생성
         List<String> dates = movieQueryService.generateWeeklyDates(startDate);
@@ -48,11 +48,11 @@ public class MovieController {
     public ResponseEntity<Page<MovieSummaryDTO>> getMovies(Pageable pageable) {
         Page<MovieSummaryDTO> movieSummaries = movieQueryService.getMoviesWithPagination(pageable);
         return ResponseEntity.ok(movieSummaries);
-    }
+    } //영화 목록을 불러오는 api
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieDetailDTO> getMovieDetail(@PathVariable Long id) {
         MovieDetailDTO movieDetail = movieQueryService.getMovieDetailById(id);
         return ResponseEntity.ok(movieDetail);
-    }
+    }//영화 상세 페이지로 가는 api
 }
