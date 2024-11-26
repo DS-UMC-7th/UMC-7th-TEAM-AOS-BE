@@ -7,13 +7,14 @@ import umc.moviein.web.dto.Movie.MovieListDTO;
 import umc.moviein.web.dto.Movie.MovieSummaryDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MovieQueryService {
     public List<String> generateWeeklyDates(String startDate);
     public List<MovieListDTO> fetchMovies(String targetDate);
     public MovieDetailDTO fetchMovieDetail(String movieCd);
     public void fetchAdditionalMovieDetails(MovieDetailDTO dto);
-    public Page<MovieSummaryDTO> getMoviesWithPagination(Pageable pageable);
+    public Map<String, Object> getMoviesWithCursorPagination(Long cursor, int limit);
     public MovieDetailDTO getMovieDetailById(Long id);
 
 }

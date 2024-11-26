@@ -1,16 +1,13 @@
 package umc.moviein.web.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import umc.moviein.apiPayload.ApiResponse;
 import umc.moviein.service.MovieService.MovieCommandService;
 import umc.moviein.service.MovieService.MovieQueryService;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
-import umc.moviein.web.dto.Movie.MovieListDTO;
-import umc.moviein.web.dto.Movie.MovieSummaryDTO;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -23,36 +20,29 @@ public class MovieController {
         this.movieCommandService = movieCommandService;
     }
 
-    @PostMapping("/save-weekly") //영화 정보 가져와서 저장하는 API, requestparam으로 날짜 줄 것! ex)20240101 <- 추천
-    public ResponseEntity<String> saveWeeklyMovies(@RequestParam String startDate) {
-        // 주간 날짜 생성
-        List<String> dates = movieQueryService.generateWeeklyDates(startDate);
+    @PostMapping("/save") // 영화 정보 가져와서 저장하는 API
+    public ApiResponse<Void> saveWeeklyMovies(@RequestParam String startDate) {
+        movieQueryService.generateWeeklyDates(startDate).stream() // 주간 날짜 스트림 생성
+                .map(movieQueryService::fetchMovies) // 각 날짜의 영화 목록 가져오기
+                .flatMap(List::stream) // 각 영화 목록(List<MovieListDTO>)을 단일 스트림으로 펼치기
+                .map(movie -> movieQueryService.fetchMovieDetail(movie.getMovieCd())) // 각 영화의 상세 정보 가져오기
+                .forEach(movieCommandService::saveMovieIfNotExists); // 중복 확인 및 저장
 
-        for (String targetDate : dates) {
-            // 박스오피스 목록 가져오기
-            List<MovieListDTO> movies = movieQueryService.fetchMovies(targetDate);
-
-            for (MovieListDTO movie : movies) {
-                // 영화 상세 정보 가져오기
-                MovieDetailDTO detail = movieQueryService.fetchMovieDetail(movie.getMovieCd());
-
-                // 중복 확인 및 저장
-                movieCommandService.saveMovieIfNotExists(detail);
-            }
-        }
-
-        return ResponseEntity.ok("Weekly movies saved successfully!");
+        return ApiResponse.onSuccess(null);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<MovieSummaryDTO>> getMovies(Pageable pageable) {
-        Page<MovieSummaryDTO> movieSummaries = movieQueryService.getMoviesWithPagination(pageable);
-        return ResponseEntity.ok(movieSummaries);
-    } //영화 목록을 불러오는 api
+    @GetMapping //영화 목록 불러오기
+    public ApiResponse<Map<String, Object>> getMoviesWithCursor(
+            @RequestParam(required = false) Long cursor, // 커서 값 (null 가능)
+            @RequestParam(defaultValue = "20") int limit // 가져올 데이터 개수
+    ) {
+        Map<String, Object> result = movieQueryService.getMoviesWithCursorPagination(cursor, limit);
+        return ApiResponse.onSuccess(result);
+    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MovieDetailDTO> getMovieDetail(@PathVariable Long id) {
+    @GetMapping("/{id}") //영화 상세 불러오기
+    public ApiResponse<MovieDetailDTO> getMovieDetail(@PathVariable Long id) {
         MovieDetailDTO movieDetail = movieQueryService.getMovieDetailById(id);
-        return ResponseEntity.ok(movieDetail);
-    }//영화 상세 페이지로 가는 api
+        return ApiResponse.onSuccess(movieDetail);
+    }
 }

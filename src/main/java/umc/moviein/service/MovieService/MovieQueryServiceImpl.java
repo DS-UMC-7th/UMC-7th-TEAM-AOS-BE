@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import umc.moviein.apiPayload.Exception.handler.MovieHandler;
+import umc.moviein.apiPayload.code.status.ErrorStatus;
 import umc.moviein.converter.MovieConverter;
 import umc.moviein.domain.Movie;
 import umc.moviein.repository.MovieRepository;
@@ -14,11 +18,10 @@ import umc.moviein.web.dto.Movie.MovieDetailDTO;
 import umc.moviein.web.dto.Movie.MovieListDTO;
 import umc.moviein.web.dto.Movie.MovieSummaryDTO;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,6 +76,7 @@ public class MovieQueryServiceImpl implements MovieQueryService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+        //요기 에러처리 안 함
     }
 
     // 영화 상세 정보 가져오기
@@ -85,7 +89,7 @@ public class MovieQueryServiceImpl implements MovieQueryService {
         try {
             var response = restTemplate.getForObject(url, Map.class);
             if (response == null || !response.containsKey("movieInfoResult")) {
-                throw new RuntimeException("KOBIS API 응답이 비어있습니다.");
+                throw new MovieHandler(ErrorStatus.MOVIE_NOT_FOUND);
             }
 
             var movieInfo = (Map<String, Object>) ((Map<String, Object>) response.get("movieInfoResult")).get("movieInfo");
@@ -101,13 +105,11 @@ public class MovieQueryServiceImpl implements MovieQueryService {
                 dto.setWatchGradeNm((String) audits.get(0).get("watchGradeNm"));
             }
 
-            // 감독 처리
+            // 감독 및 배우 정보 처리
             var directors = (List<Map<String, Object>>) movieInfo.get("directors");
             if (directors != null && !directors.isEmpty()) {
                 dto.setDirector((String) directors.get(0).get("peopleNm"));
             }
-
-            // 배우 처리: peopleNm만 추출
             var actors = (List<Map<String, Object>>) movieInfo.get("actors");
             if (actors != null && !actors.isEmpty()) {
                 dto.setActors(actors.stream()
@@ -115,13 +117,12 @@ public class MovieQueryServiceImpl implements MovieQueryService {
                         .toList());
             }
 
-            // KMDB API에서 추가 정보 가져오기
+            // 추가 데이터 가져오기
             fetchAdditionalMovieDetails(dto);
 
             return dto;
         } catch (Exception e) {
-            System.err.println("KOBIS API 호출 중 에러 발생: " + e.getMessage());
-            return null; // 예외 발생 시 null 반환 또는 기본 값 설정 가능
+            throw new MovieHandler(ErrorStatus.EXTERNAL_API_ERROR);
         }
     }
 
@@ -172,14 +173,34 @@ public class MovieQueryServiceImpl implements MovieQueryService {
         }
     }
 
-    public Page<MovieSummaryDTO> getMoviesWithPagination(Pageable pageable) {
-        return movieRepository.findAll(pageable)
-                .map(MovieConverter::toSummaryDTO);
+    public Map<String, Object> getMoviesWithCursorPagination(Long cursor, int limit) {
+        // 커서가 null인 경우 처음부터 가져오기
+        List<Movie> movies;
+        if (cursor == null) {
+            movies = movieRepository.findAll(PageRequest.of(0, limit, Sort.by("id").ascending())).getContent();
+        } else {
+            movies = movieRepository.findByIdGreaterThan(cursor, PageRequest.of(0, limit, Sort.by("id").ascending()));
+        }
+
+        // 다음 커서 계산
+        Long nextCursor = !movies.isEmpty() ? movies.get(movies.size() - 1).getId() : null;
+
+        // 변환 및 응답 구성
+        List<MovieSummaryDTO> movieDTOs = movies.stream()
+                .map(MovieConverter::toSummaryDTO)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", movieDTOs);
+        response.put("nextCursor", nextCursor); // 다음 커서
+        response.put("hasNext", nextCursor != null); // 다음 페이지 여부
+        return response;
     }
 
+    @Override
     public MovieDetailDTO getMovieDetailById(Long id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Movie not found with id: " + id));
-        return MovieConverter.toDTO(movie);
+        return movieRepository.findById(id)
+                .map(MovieConverter::toDTO)
+                .orElseThrow(() -> new MovieHandler(ErrorStatus.MOVIE_NOT_FOUND));
     }
 }
