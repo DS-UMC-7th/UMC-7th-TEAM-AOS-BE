@@ -1,5 +1,6 @@
 package umc.moviein.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class PreferenceController {
     private final MypageQueryService mypageQueryService;
 
     @PostMapping("/{movieId}")
+    @Operation(summary = "좋아요/싫어요 누르기",description = "좋아요/싫어요 여부를 입력합니다.")
     public ApiResponse<PreferenceResponseDTO.CreateResponseDTO> createMoviePreference(
             @PathVariable("movieId") Long movieId,
             @Valid @RequestBody PreferenceRequestDTO.CreateRequestDTO createRequestDTO
