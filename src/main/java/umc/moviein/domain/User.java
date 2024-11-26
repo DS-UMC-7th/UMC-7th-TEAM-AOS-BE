@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.moviein.domain.common.BaseEntity;
 
-import java.time.LocalTime;
-import java.util.List;
-
 
 @Entity
 @Getter

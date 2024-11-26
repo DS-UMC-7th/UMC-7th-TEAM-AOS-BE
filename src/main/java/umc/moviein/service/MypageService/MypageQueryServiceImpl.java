@@ -3,15 +3,11 @@ package umc.moviein.service.MypageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xml.sax.ErrorHandler;
 import umc.moviein.apiPayload.Exception.handler.UserHandler;
 import umc.moviein.apiPayload.code.status.ErrorStatus;
 import umc.moviein.domain.User;
 import umc.moviein.repository.UserRepository;
 import umc.moviein.web.dto.mypage.MypageResponseDTO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
