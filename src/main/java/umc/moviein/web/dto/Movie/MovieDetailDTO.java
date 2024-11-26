@@ -19,5 +19,10 @@ public class MovieDetailDTO {
     private List<String> actors;
     private String poster;
     private String plot;
+    // 좋아요 통계 응답
+    private Long likeCount;
+    private Long dislikeCount;
+    private Integer totalCount;
+
 
 }
