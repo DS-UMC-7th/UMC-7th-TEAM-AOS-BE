@@ -25,8 +25,9 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //영화 관련 에러
     MOVIE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MOVIE4001", "영화가 없습니다."),
-    EXTERNAL_API_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "MOVIE4002", "영화 저장 중 오류가 발생했습니다.");
-
+    MOVIE_TO_SAVE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MOVIE4002", "저장려는 영화가 없습니다."),
+    EXTERNAL_API1_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "MOVIE4003", "영화 목록 저장 오류"),
+    EXTERNAL_API2_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "MOVIE4004", "영화 상세 저장 오류");
 
 
     private final HttpStatus httpStatus;

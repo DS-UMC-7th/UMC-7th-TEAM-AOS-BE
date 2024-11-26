@@ -3,9 +3,7 @@ package umc.moviein.service.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -64,19 +62,22 @@ public class MovieQueryServiceImpl implements MovieQueryService {
                 "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=%s&targetDt=%s",
                 kobisApiKey, targetDate);
 
-        var response = restTemplate.getForObject(url, Map.class);
-        var boxOfficeResult = (Map<String, Object>) response.get("boxOfficeResult");
-        var weeklyBoxOfficeList = (List<Map<String, Object>>) boxOfficeResult.get("weeklyBoxOfficeList");
+        try {
+            var response = restTemplate.getForObject(url, Map.class);
+            var boxOfficeResult = (Map<String, Object>) response.get("boxOfficeResult");
+            var weeklyBoxOfficeList = (List<Map<String, Object>>) boxOfficeResult.get("weeklyBoxOfficeList");
 
-        return weeklyBoxOfficeList.stream()
-                .map(movie -> {
-                    MovieListDTO dto = new MovieListDTO();
-                    dto.setMovieCd((String) movie.get("movieCd"));
-                    dto.setMovieNm((String) movie.get("movieNm"));
-                    return dto;
-                })
-                .collect(Collectors.toList());
-        //요기 에러처리 안 함
+            return weeklyBoxOfficeList.stream()
+                    .map(movie -> {
+                        MovieListDTO dto = new MovieListDTO();
+                        dto.setMovieCd((String) movie.get("movieCd"));
+                        dto.setMovieNm((String) movie.get("movieNm"));
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new MovieHandler(ErrorStatus.EXTERNAL_API1_ERROR);
+        }
     }
 
     // 영화 상세 정보 가져오기
@@ -89,7 +90,7 @@ public class MovieQueryServiceImpl implements MovieQueryService {
         try {
             var response = restTemplate.getForObject(url, Map.class);
             if (response == null || !response.containsKey("movieInfoResult")) {
-                throw new MovieHandler(ErrorStatus.MOVIE_NOT_FOUND);
+                throw new MovieHandler(ErrorStatus.MOVIE_TO_SAVE_NOT_FOUND);
             }
 
             var movieInfo = (Map<String, Object>) ((Map<String, Object>) response.get("movieInfoResult")).get("movieInfo");
@@ -122,15 +123,15 @@ public class MovieQueryServiceImpl implements MovieQueryService {
 
             return dto;
         } catch (Exception e) {
-            throw new MovieHandler(ErrorStatus.EXTERNAL_API_ERROR);
+            throw new MovieHandler(ErrorStatus.EXTERNAL_API2_ERROR);
         }
     }
 
     // KMDB API를 호출하여 줄거리와 포스터를 가져오는 메서드
     public void fetchAdditionalMovieDetails(MovieDetailDTO dto) {
         String url = String.format(
-                "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&ServiceKey=%s&detail=Y&query=%s",
-                kmdbApiKey, dto.getMovieNm()
+                "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&ServiceKey=%s&detail=Y&query=%s&sort=prodYear,1&releaseDts=%s",
+                kmdbApiKey, dto.getMovieNm(), dto.getOpenDt()
         );
 
         try {
@@ -167,7 +168,6 @@ public class MovieQueryServiceImpl implements MovieQueryService {
                 dto.setPoster(null);
             }
         } catch (Exception e) {
-            System.err.println("KMDB API 호출 중 에러 발생: " + e.getMessage());
             dto.setPlot("줄거리 정보를 가져올 수 없습니다.");
             dto.setPoster(null);
         }

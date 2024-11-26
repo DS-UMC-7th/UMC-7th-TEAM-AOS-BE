@@ -30,7 +30,4 @@ public class MovieCommandServiceImpl implements MovieCommandService {
             movieRepository.save(movie);
         }
     }
-    public Movie saveMovie(Movie movie) {
-        return movieRepository.save(movie);
-    }
 }
