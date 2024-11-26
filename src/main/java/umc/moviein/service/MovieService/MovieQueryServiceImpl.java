@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
 
 @Service
 public class MovieQueryServiceImpl implements MovieQueryService {
@@ -202,5 +203,18 @@ public class MovieQueryServiceImpl implements MovieQueryService {
         return movieRepository.findById(id)
                 .map(MovieConverter::toDTO)
                 .orElseThrow(() -> new MovieHandler(ErrorStatus.MOVIE_NOT_FOUND));
+    }
+
+    @Override
+    public List<Movie> getMoviesOrderByLikeWithCursor() {
+        List<Movie> movies = movieRepository.findMoviesByLatestLikes();
+
+        return new ArrayList<>(movies.stream()
+                .collect(Collectors.toMap(
+                        Movie::getId,
+                        movie -> movie,
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new))
+                .values());
     }
 }

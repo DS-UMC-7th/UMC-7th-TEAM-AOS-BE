@@ -1,16 +1,22 @@
 package umc.moviein.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import umc.moviein.apiPayload.ApiResponse;
+import umc.moviein.converter.MovieConverter;
+import umc.moviein.domain.Movie;
 import umc.moviein.service.MovieService.MovieCommandService;
 import umc.moviein.service.MovieService.MovieQueryService;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
+import umc.moviein.web.dto.Movie.MovieResponseDTO;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/movies")
+@Tag(name = "영화 API", description = "영화 조회 관련 API입니다.")
 public class MovieController {
     private final MovieQueryService movieQueryService;
     private final MovieCommandService movieCommandService;
@@ -44,5 +50,12 @@ public class MovieController {
     public ApiResponse<MovieDetailDTO> getMovieDetail(@PathVariable Long id) {
         MovieDetailDTO movieDetail = movieQueryService.getMovieDetailById(id);
         return ApiResponse.onSuccess(movieDetail);
+    }
+
+    @GetMapping("/like-order")
+    @Operation(summary = "최근 좋아요 눌린 영화 조회",description = "최근 좋아요 눌린 영화를 조회합니다.")
+    public ApiResponse<MovieResponseDTO.GetMovieListResponseDTO> getMoviesOrderByLikeWithCursor () {
+        List<Movie> movies = movieQueryService.getMoviesOrderByLikeWithCursor();
+        return ApiResponse.onSuccess(MovieConverter.toGetMovieListResponseDTO(movies));
     }
 }

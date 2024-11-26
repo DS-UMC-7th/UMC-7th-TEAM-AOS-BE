@@ -27,8 +27,12 @@ public enum ErrorStatus implements BaseErrorCode {
     MOVIE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MOVIE4001", "영화가 없습니다."),
     MOVIE_TO_SAVE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MOVIE4002", "저장려는 영화가 없습니다."),
     EXTERNAL_API1_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "MOVIE4003", "영화 목록 저장 오류"),
-    EXTERNAL_API2_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "MOVIE4004", "영화 상세 저장 오류");
+    EXTERNAL_API2_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "MOVIE4004", "영화 상세 저장 오류"),
 
+    // 좋아요 및 싫어요 관련 에러
+    DUPLICATE_PREFERENCE(HttpStatus.CONFLICT, "PREFERENCE001", "이미 좋아요 혹은 싫어요를 누른 유저입니다."),
+
+    ;
 
     private final HttpStatus httpStatus;
     private final String code;

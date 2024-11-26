@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -32,5 +33,9 @@ public class Movie {
 
     @Column(length = 500)
     private String posterUrl; //포스터 이미지 URL
+
+    // Preference
+    @OneToMany(mappedBy = "movie")
+    private List<Preference> preferences;
 }
 

@@ -2,6 +2,7 @@ package umc.moviein.service.MovieService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import umc.moviein.domain.Movie;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
 import umc.moviein.web.dto.Movie.MovieListDTO;
 import umc.moviein.web.dto.Movie.MovieSummaryDTO;
@@ -16,5 +17,5 @@ public interface MovieQueryService {
     public void fetchAdditionalMovieDetails(MovieDetailDTO dto);
     public Map<String, Object> getMoviesWithCursorPagination(Long cursor, int limit);
     public MovieDetailDTO getMovieDetailById(Long id);
-
+    List<Movie> getMoviesOrderByLikeWithCursor();
 }

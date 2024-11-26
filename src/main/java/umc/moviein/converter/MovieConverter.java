@@ -2,8 +2,12 @@ package umc.moviein.converter;
 
 import org.springframework.stereotype.Component;
 import umc.moviein.domain.Movie;
+import umc.moviein.domain.Preference;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
+import umc.moviein.web.dto.Movie.MovieResponseDTO;
 import umc.moviein.web.dto.Movie.MovieSummaryDTO;
+
+import java.util.List;
 
 @Component
 public class MovieConverter {
@@ -22,6 +26,12 @@ public class MovieConverter {
     }
 
     public static MovieDetailDTO toDTO(Movie movie) {
+        List<Preference> preferences = movie.getPreferences();
+
+        Long likeCount = preferences.stream().filter(Preference::isLike).count();
+        Long dislikeCount = preferences.stream().filter(preference -> !preference.isLike()).count();
+        Integer totalCount = preferences.size();
+
         MovieDetailDTO dto = new MovieDetailDTO();
         dto.setMovieCd(movie.getMovieCd());
         dto.setMovieNm(movie.getMovieNm());
@@ -32,6 +42,9 @@ public class MovieConverter {
         dto.setDirector(movie.getDirector());
         dto.setActors(movie.getActors());
         dto.setPoster(movie.getPosterUrl());
+        dto.setLikeCount(likeCount);
+        dto.setDislikeCount(dislikeCount);
+        dto.setTotalCount(totalCount);
         return dto;
     }
 
@@ -41,5 +54,15 @@ public class MovieConverter {
                 movie.getMovieNm(),
                 movie.getPosterUrl()
         );
+    }
+
+    public static MovieResponseDTO.GetMovieListResponseDTO toGetMovieListResponseDTO (List<Movie> movies) {
+
+        List<MovieSummaryDTO> movieSummaryDTOList = movies.stream()
+                .map(MovieConverter::toSummaryDTO).toList();
+
+        return MovieResponseDTO.GetMovieListResponseDTO.builder()
+                .movieList(movieSummaryDTOList)
+                .build();
     }
 }
