@@ -20,7 +20,7 @@ public class MovieController {
         this.movieCommandService = movieCommandService;
     }
 
-    @PostMapping("/save") // 영화 정보 가져와서 저장하는 API
+    @GetMapping("/save") // 영화 정보 가져와서 저장하는 API
     public ApiResponse<Void> saveWeeklyMovies(@RequestParam String startDate) {
         movieQueryService.generateWeeklyDates(startDate).stream() // 주간 날짜 스트림 생성
                 .map(movieQueryService::fetchMovies) // 각 날짜의 영화 목록 가져오기

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.moviein.apiPayload.ApiResponse;
 import umc.moviein.converter.UserConverter;
-import umc.moviein.domain.User;
+import umc.moviein.domain.Users;
 import umc.moviein.service.SignService.SignCommandService;
 import umc.moviein.service.SignService.SignQueryService;
 import umc.moviein.web.dto.sign.*;
@@ -25,7 +25,7 @@ public class SignRestController {
     @Operation(summary = "회원가입",description = "아이디/비밀번호/이메일/닉네임을 바탕으로 유저를 생성합니다.")
     @PostMapping("/sign-up")
     public ApiResponse<SignUpResponseDTO.JoinResultDTO> signUp(@RequestBody @Valid SignUpRequestDTO.JoinDto request){
-        User user = signCommandService.signUp(request);
+        Users user = signCommandService.signUp(request);
         return ApiResponse.onSuccess(UserConverter.toJoinResultDTO(user));
     }
     @Operation(summary = "로그인",description = "loginId와 password를 가지고 로그인합니다.")
