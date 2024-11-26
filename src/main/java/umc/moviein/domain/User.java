@@ -10,7 +10,7 @@ import umc.moviein.domain.common.BaseEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users extends BaseEntity {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
