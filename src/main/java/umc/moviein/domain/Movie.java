@@ -32,5 +32,9 @@ public class Movie {
 
     @Column(length = 500)
     private String posterUrl; //포스터 이미지 URL
+
+    // Preference
+    @OneToMany(mappedBy = "movie")
+    private List<Preference> preferences;
 }
 
