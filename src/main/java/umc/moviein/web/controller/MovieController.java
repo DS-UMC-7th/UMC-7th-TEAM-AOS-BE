@@ -2,9 +2,12 @@ package umc.moviein.web.controller;
 
 import org.springframework.web.bind.annotation.*;
 import umc.moviein.apiPayload.ApiResponse;
+import umc.moviein.converter.MovieConverter;
+import umc.moviein.domain.Movie;
 import umc.moviein.service.MovieService.MovieCommandService;
 import umc.moviein.service.MovieService.MovieQueryService;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
+import umc.moviein.web.dto.Movie.MovieResponseDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -44,5 +47,11 @@ public class MovieController {
     public ApiResponse<MovieDetailDTO> getMovieDetail(@PathVariable Long id) {
         MovieDetailDTO movieDetail = movieQueryService.getMovieDetailById(id);
         return ApiResponse.onSuccess(movieDetail);
+    }
+
+    @GetMapping("/like-order")
+    public ApiResponse<MovieResponseDTO.GetMovieListResponseDTO> getMoviesOrderByLikeWithCursor () {
+        List<Movie> movies = movieQueryService.getMoviesOrderByLikeWithCursor();
+        return ApiResponse.onSuccess(MovieConverter.toGetMovieListResponseDTO(movies));
     }
 }

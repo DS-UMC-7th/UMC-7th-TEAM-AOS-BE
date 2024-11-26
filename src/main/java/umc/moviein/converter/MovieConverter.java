@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import umc.moviein.domain.Movie;
 import umc.moviein.domain.Preference;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
+import umc.moviein.web.dto.Movie.MovieResponseDTO;
 import umc.moviein.web.dto.Movie.MovieSummaryDTO;
 
 import java.util.List;
@@ -53,5 +54,15 @@ public class MovieConverter {
                 movie.getMovieNm(),
                 movie.getPosterUrl()
         );
+    }
+
+    public static MovieResponseDTO.GetMovieListResponseDTO toGetMovieListResponseDTO (List<Movie> movies) {
+
+        List<MovieSummaryDTO> movieSummaryDTOList = movies.stream()
+                .map(MovieConverter::toSummaryDTO).toList();
+
+        return MovieResponseDTO.GetMovieListResponseDTO.builder()
+                .movieList(movieSummaryDTOList)
+                .build();
     }
 }
