@@ -10,6 +10,7 @@ import umc.moviein.domain.Tag;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tag-review")
 public class TagReview {
     @Id

@@ -34,9 +34,10 @@ public class ReviewService {
         Review review = ReviewRequestDto.convertDtoToEntity(dto);
         // Todo 예외처리
         review.setUser(userRepository.findById(getCurrentMemberId()).orElseThrow(() -> new IllegalArgumentException("not valid user in review")));
+        reviewRepository.save(review);
         tagReviewRepository.saveAll(createOrUpdateTags(dto.getTags(), review));
 
-        reviewRepository.save(review);
+
         return review;
     }
 
