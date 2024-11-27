@@ -15,4 +15,17 @@ public class MovieResponseDTO {
     public static class GetMovieListResponseDTO {
         private List<MovieSummaryDTO> movieList;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMovieListWithPageResponseDTO {
+        List<MovieSummaryDTO> movieList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
 }

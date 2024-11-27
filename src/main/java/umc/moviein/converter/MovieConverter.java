@@ -1,5 +1,6 @@
 package umc.moviein.converter;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import umc.moviein.domain.Movie;
 import umc.moviein.domain.Preference;
@@ -62,6 +63,20 @@ public class MovieConverter {
                 .map(MovieConverter::toSummaryDTO).toList();
 
         return MovieResponseDTO.GetMovieListResponseDTO.builder()
+                .movieList(movieSummaryDTOList)
+                .build();
+    }
+
+    public static MovieResponseDTO.GetMovieListWithPageResponseDTO toGetMovieListWithPageResponseDTO(Page<Movie> moviePage) {
+        List<MovieSummaryDTO> movieSummaryDTOList = moviePage.stream()
+                .map(MovieConverter::toSummaryDTO).toList();
+
+        return MovieResponseDTO.GetMovieListWithPageResponseDTO.builder()
+                .isFirst(moviePage.isFirst())
+                .isLast(moviePage.isLast())
+                .totalPage(moviePage.getTotalPages())
+                .totalElements(moviePage.getTotalElements())
+                .listSize(movieSummaryDTOList.size())
                 .movieList(movieSummaryDTOList)
                 .build();
     }
