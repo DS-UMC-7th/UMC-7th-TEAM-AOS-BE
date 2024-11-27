@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.moviein.domain.common.BaseEntity;
 
+import java.util.*;
+
 
 @Entity
 @Getter
@@ -27,5 +29,8 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList = new ArrayList<>();
 
 }
