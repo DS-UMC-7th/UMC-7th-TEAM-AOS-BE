@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umc.moviein.apiPayload.ApiResponse;
 import umc.moviein.apiPayload.Exception.handler.UserHandler;
 import umc.moviein.apiPayload.code.status.ErrorStatus;
 import umc.moviein.converter.UserConverter;

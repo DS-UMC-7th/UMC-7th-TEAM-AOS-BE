@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.moviein.domain.common.BaseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
