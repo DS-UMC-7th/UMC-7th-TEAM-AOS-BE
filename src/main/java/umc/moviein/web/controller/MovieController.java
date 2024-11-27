@@ -70,4 +70,14 @@ public class MovieController {
         return ApiResponse.onSuccess(MovieConverter.toGetMovieListWithPageResponseDTO(movies));
 
     }
+
+    @GetMapping("/order-rate")
+    @Operation(summary = "평점 순 조회",description = "평점이 높은 영화 순으로 조회합니다. page는 가져올 페이지, size는 한번에 가져올 양입니다.")
+    public ApiResponse<MovieResponseDTO.GetMovieListWithPageResponseDTO> getMovieOrderByReviewRate(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size // 가져올 데이터 개수
+    ) {
+        Page<Movie> movies = movieQueryService.getMovieOrderByReviewRate(page, size);
+        return ApiResponse.onSuccess(MovieConverter.toGetMovieListWithPageResponseDTO(movies));
+    }
 }

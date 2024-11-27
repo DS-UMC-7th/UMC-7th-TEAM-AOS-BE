@@ -17,5 +17,11 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findMoviesByLatestLikes();
 
     Page<Movie> findAllByOrderByOpenDtDesc(PageRequest of);
+
+    @Query("SELECT m FROM Movie m " +
+            "LEFT JOIN Review r ON m.id = r.movieId " +
+            "GROUP BY m.id " +
+            "ORDER BY AVG(r.rating) DESC")
+    Page<Movie> findMoviesOrderByAverageRatingDesc(Pageable pageable);
 }
 
