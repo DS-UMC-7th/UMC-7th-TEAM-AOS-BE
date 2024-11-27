@@ -2,6 +2,7 @@ package umc.moviein.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import umc.moviein.apiPayload.ApiResponse;
 import umc.moviein.converter.MovieConverter;
@@ -57,5 +58,26 @@ public class MovieController {
     public ApiResponse<MovieResponseDTO.GetMovieListResponseDTO> getMoviesOrderByLikeWithCursor () {
         List<Movie> movies = movieQueryService.getMoviesOrderByLikeWithCursor();
         return ApiResponse.onSuccess(MovieConverter.toGetMovieListResponseDTO(movies));
+    }
+
+    @GetMapping("/order-open-date")
+    @Operation(summary = "개봉일 역순 조회",description = "개봉일 역순으로 영화를 조회합니다. page는 가져올 페이지, size는 한번에 가져올 양입니다.")
+    public ApiResponse<MovieResponseDTO.GetMovieListWithPageResponseDTO> getMovieOrderByOpenDateDesc(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size // 가져올 데이터 개수
+    ) {
+        Page<Movie> movies = movieQueryService.getMovieOrderByOpenDateDesc(page, size);
+        return ApiResponse.onSuccess(MovieConverter.toGetMovieListWithPageResponseDTO(movies));
+
+    }
+
+    @GetMapping("/order-rate")
+    @Operation(summary = "평점 순 조회",description = "평점이 높은 영화 순으로 조회합니다. page는 가져올 페이지, size는 한번에 가져올 양입니다.")
+    public ApiResponse<MovieResponseDTO.GetMovieListWithPageResponseDTO> getMovieOrderByReviewRate(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size // 가져올 데이터 개수
+    ) {
+        Page<Movie> movies = movieQueryService.getMovieOrderByReviewRate(page, size);
+        return ApiResponse.onSuccess(MovieConverter.toGetMovieListWithPageResponseDTO(movies));
     }
 }

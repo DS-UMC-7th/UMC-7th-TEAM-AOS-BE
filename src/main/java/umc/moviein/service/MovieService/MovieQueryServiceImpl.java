@@ -3,7 +3,9 @@ package umc.moviein.service.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -216,5 +218,16 @@ public class MovieQueryServiceImpl implements MovieQueryService {
                         (existing, replacement) -> existing,
                         LinkedHashMap::new))
                 .values());
+    }
+
+    @Override
+    public Page<Movie> getMovieOrderByOpenDateDesc(int page, int size) {
+        return movieRepository.findAllByOrderByOpenDtDesc(PageRequest.of(page, size));
+    }
+
+    @Override
+    public Page<Movie> getMovieOrderByReviewRate(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return movieRepository.findMoviesOrderByAverageRatingDesc(pageable);
     }
 }

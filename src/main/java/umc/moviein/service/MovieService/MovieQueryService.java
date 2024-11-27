@@ -18,4 +18,6 @@ public interface MovieQueryService {
     public Map<String, Object> getMoviesWithCursorPagination(Long cursor, int limit);
     public MovieDetailDTO getMovieDetailById(Long id);
     List<Movie> getMoviesOrderByLikeWithCursor();
+    Page<Movie> getMovieOrderByOpenDateDesc(int page, int limit);
+    Page<Movie> getMovieOrderByReviewRate(int page, int size);
 }
