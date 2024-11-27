@@ -230,4 +230,10 @@ public class MovieQueryServiceImpl implements MovieQueryService {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findMoviesOrderByAverageRatingDesc(pageable);
     }
+
+    @Override
+    public Page<Movie> searchMoviesByKeyword(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return movieRepository.searchMoviesByKeyword(keyword, pageable);
+    }
 }

@@ -5,12 +5,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import umc.moviein.apiPayload.ApiResponse;
+import umc.moviein.apiPayload.Exception.handler.MovieHandler;
+import umc.moviein.apiPayload.code.status.ErrorStatus;
 import umc.moviein.converter.MovieConverter;
 import umc.moviein.domain.Movie;
 import umc.moviein.service.MovieService.MovieCommandService;
 import umc.moviein.service.MovieService.MovieQueryService;
 import umc.moviein.web.dto.Movie.MovieDetailDTO;
 import umc.moviein.web.dto.Movie.MovieResponseDTO;
+import umc.moviein.web.dto.Movie.MovieSummaryDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -79,5 +82,27 @@ public class MovieController {
     ) {
         Page<Movie> movies = movieQueryService.getMovieOrderByReviewRate(page, size);
         return ApiResponse.onSuccess(MovieConverter.toGetMovieListWithPageResponseDTO(movies));
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "영화 검색", description = "키워드로 영화를 검색합니다. 페이지 정보를 포함하여 반환합니다.")
+    public ApiResponse<Page<MovieSummaryDTO>> searchMovies(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size) {
+
+        // 영화 검색 결과를 가져옴
+        Page<Movie> movies = movieQueryService.searchMoviesByKeyword(keyword, page, size);
+
+        // 검색 결과가 없을 때
+        if (movies.isEmpty()) {
+            throw new MovieHandler(ErrorStatus.MOVIE_NOT_FOUND);
+        }
+
+        // Movie를 MovieSummaryDTO로 변환
+        Page<MovieSummaryDTO> response = movies.map(MovieConverter::toSummaryDTO);
+
+        // 검색 결과가 있을 때 성공 응답
+        return ApiResponse.onSuccess(response);
     }
 }

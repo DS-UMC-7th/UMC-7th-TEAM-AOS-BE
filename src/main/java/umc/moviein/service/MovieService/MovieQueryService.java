@@ -20,4 +20,5 @@ public interface MovieQueryService {
     List<Movie> getMoviesOrderByLikeWithCursor();
     Page<Movie> getMovieOrderByOpenDateDesc(int page, int limit);
     Page<Movie> getMovieOrderByReviewRate(int page, int size);
+    Page<Movie> searchMoviesByKeyword(String keyword, int page, int size);
 }
