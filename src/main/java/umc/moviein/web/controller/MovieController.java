@@ -85,13 +85,12 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "영화 검색", description = "키워드로 영화를 검색합니다. 페이지 정보를 포함하여 반환합니다.")
+    @Operation(summary = "영화 검색", description = "키워드로 영화를 검색합니다. page는 가져올 페이지, size는 한번에 가져올 양입니다.")
     public ApiResponse<Page<MovieSummaryDTO>> searchMovies(
             @RequestParam("keyword") String keyword,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size) {
+            @RequestParam(value = "size", defaultValue = "20") int size) {
 
-        // 영화 검색 결과를 가져옴
         Page<Movie> movies = movieQueryService.searchMoviesByKeyword(keyword, page, size);
 
         // 검색 결과가 없을 때
@@ -99,10 +98,7 @@ public class MovieController {
             throw new MovieHandler(ErrorStatus.MOVIE_NOT_FOUND);
         }
 
-        // Movie를 MovieSummaryDTO로 변환
         Page<MovieSummaryDTO> response = movies.map(MovieConverter::toSummaryDTO);
-
-        // 검색 결과가 있을 때 성공 응답
         return ApiResponse.onSuccess(response);
     }
 }
