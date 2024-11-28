@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import umc.moviein.domain.Movie;
 
 import java.util.List;
@@ -23,5 +24,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             "GROUP BY m.id " +
             "ORDER BY AVG(r.rating) DESC")
     Page<Movie> findMoviesOrderByAverageRatingDesc(Pageable pageable);
+
+    @Query("SELECT m FROM Movie m WHERE LOWER(m.movieNm) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(m.director) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Movie> searchMoviesByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
 

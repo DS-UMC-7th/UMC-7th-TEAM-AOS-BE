@@ -31,7 +31,6 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 좋아요 및 싫어요 관련 에러
     DUPLICATE_PREFERENCE(HttpStatus.CONFLICT, "PREFERENCE001", "이미 좋아요 혹은 싫어요를 누른 유저입니다."),
-
     ;
 
     private final HttpStatus httpStatus;
