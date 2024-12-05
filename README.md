@@ -1,6 +1,7 @@
 # UMC-7th-TEAM-AOS-BE
 
 ## 프로젝트 설명
+영화 리뷰와 좋아요를 남기고 다양한 추천을 받아볼 수 있는 앱 서비스입니다.
 
 ## 사용 스택 및 라이브러리
   <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
