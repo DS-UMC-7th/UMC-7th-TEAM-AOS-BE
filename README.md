@@ -7,14 +7,12 @@
   <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 
 
-
-
 ## 역할분담
 ### BACKEND Developer
 | <center>강채원</center>| <center>김은서</center>| <center>소원</center>| <center>인다운</center>| <center>황민지</center>| 
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| <center> <img width="150px" /></center> | <center><img src="https://avatars.githubusercontent.com/u/128278212?v=4" width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px" src="https://avatars.githubusercontent.com/u/139426988?v=4"/></center> |
-| |[@7beunseo](https://github.com/7beunseo) | | | [@hmj6589](https://github.com/hmj6589)|
+| <center> <img src="https://github.com/user-attachments/assets/d9a90c28-7827-4bfe-a266-311e6d874086" width="150px" /></center> | <center><img src="https://avatars.githubusercontent.com/u/128278212?v=4" width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px" src="https://avatars.githubusercontent.com/u/139426988?v=4"/></center> |
+| [@kcw9609](https://github.com/kcw9609) |[@7beunseo](https://github.com/7beunseo) | | | [@hmj6589](https://github.com/hmj6589)|
 
 
 ### 초기 세팅
