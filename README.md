@@ -11,14 +11,17 @@
 ### BACKEND Developer
 | <center>강채원</center>| <center>김은서</center>| <center>소원</center>| <center>인다운</center>| <center>황민지</center>| 
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| <center> <img src="https://github.com/user-attachments/assets/d9a90c28-7827-4bfe-a266-311e6d874086" width="150px" /></center> | <center><img src="https://avatars.githubusercontent.com/u/128278212?v=4" width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px" src="https://avatars.githubusercontent.com/u/139426988?v=4"/></center> |
-| [@kcw9609](https://github.com/kcw9609) |[@7beunseo](https://github.com/7beunseo) | | | [@hmj6589](https://github.com/hmj6589)|
+| <center> <img src="https://github.com/user-attachments/assets/d9a90c28-7827-4bfe-a266-311e6d874086" width="150px" /></center> | <center><img src="https://avatars.githubusercontent.com/u/128278212?v=4" width="150px"/></center> | <center><img src="https://avatars.githubusercontent.com/cherishwish" width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px" src="https://avatars.githubusercontent.com/u/139426988?v=4"/></center> |
+| [@kcw9609](https://github.com/kcw9609) |[@7beunseo](https://github.com/7beunseo) |[@cherishwish](https://github.com/cherishwish)| | [@hmj6589](https://github.com/hmj6589)|
 
 
 ### 초기 세팅
 
 
 ### API
+- 사용자 회원가입 **POST `소원`**
+- 사용자 로그인 **POST `소원`**
+- 마이페이지 조회 **GET `소원`**
 - 영화 좋아요/싫어요 **POST `은서`**
 - 최근 좋아요 누른 영화 목록 조회 **GET `은서`**
 - 평점 순으로 영화 조회 **GET `은서`**
