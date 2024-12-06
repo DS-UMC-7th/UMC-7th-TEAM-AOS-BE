@@ -11,8 +11,8 @@
 ### BACKEND Developer
 | <center>강채원</center>| <center>김은서</center>| <center>소원</center>| <center>인다운</center>| <center>황민지</center>| 
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| <center> <img src="https://github.com/user-attachments/assets/d9a90c28-7827-4bfe-a266-311e6d874086" width="150px" /></center> | <center><img src="https://avatars.githubusercontent.com/u/128278212?v=4" width="150px"/></center> | <center><img src="https://avatars.githubusercontent.com/cherishwish" width="150px"/></center> | <center><img width="150px"/></center> | <center><img width="150px" src="https://avatars.githubusercontent.com/u/139426988?v=4"/></center> |
-| [@kcw9609](https://github.com/kcw9609) |[@7beunseo](https://github.com/7beunseo) |[@cherishwish](https://github.com/cherishwish)| | [@hmj6589](https://github.com/hmj6589)|
+| <center> <img src="https://github.com/user-attachments/assets/d9a90c28-7827-4bfe-a266-311e6d874086" width="150px" /></center> | <center><img src="https://avatars.githubusercontent.com/u/128278212?v=4" width="150px"/></center> | <center><img src="https://avatars.githubusercontent.com/cherishwish" width="150px"/></center> | <center><img src="https://avatars.githubusercontent.com/u/114045826?v=4" width="150px"/></center> | <center><img width="150px" src="https://avatars.githubusercontent.com/u/139426988?v=4"/></center> |
+| [@kcw9609](https://github.com/kcw9609) |[@7beunseo](https://github.com/7beunseo) |[@cherishwish](https://github.com/cherishwish)| [@incrying](https://github.com/incrying) | [@hmj6589](https://github.com/hmj6589)|
 
 
 ### 초기 세팅
@@ -30,3 +30,5 @@
 - 사용자가 작성한 리뷰 불러오기 **GET `민지`**
 - 리뷰 작성하기 **POST `채원`**
 - 리뷰 목록 가져오기 **GET `채원`**
+- 영화 데이터 DB 저장하기 **GET '다운'**
+- 영화 상세 페이지 가져오기 **GET '다운'**
